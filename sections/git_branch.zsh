@@ -20,7 +20,10 @@ spaceship_git_branch() {
   [[ $SPACESHIP_GIT_BRANCH_SHOW == false ]] && return
 
   local git_current_branch="$vcs_info_msg_0_"
-  git_remote=${$(git rev-parse --abbrev-ref --symbolic-full-name @{u} |grep -E -o ".{0,20}\/.{0}" 2>/dev/null)}
+  if git rev-parse --git-dir > /dev/null 2>&1; then
+    git_remote=${$(git rev-parse --abbrev-ref --symbolic-full-name @{u} \
+      | grep -E -o ".{0,20}\/.{0}" 2>/dev/null)}
+  fi
   [[ -z "$git_current_branch" ]] && return
 
   git_current_branch="${git_current_branch#heads/}"
